@@ -1,5 +1,5 @@
 // 🔗 Replace with your actual GitHub Pages URL
-const DATA_URL = 'https://usace-rmc.github.io/RMCLakewoodLibrary/RMCJSON.json';
+const DATA_URL = 'https://raw.githubusercontent.com/USACE-RMC/RMCLakewoodLibrary/main/RMCJSON.json';
 
 let books = [];
 
@@ -29,6 +29,13 @@ function fetchBooks() {
 function populateTable(data) {
     const tbody = document.querySelector('#booksTable tbody');
     tbody.innerHTML = '';
+
+    if (data.length === 0) {
+        const row = document.createElement('tr');
+        row.innerHTML = `<td colspan="6" style="text-align:center;">No books found.</td>`;
+        tbody.appendChild(row);
+        return;
+    }
 
     data.forEach(book => {
         const row = document.createElement('tr');
@@ -139,6 +146,7 @@ function showModal(title, message) {
     document.getElementById('modalMessage').textContent = message;
     document.getElementById('confirmationModal').style.display = 'flex';
 }
+
 
 
 
