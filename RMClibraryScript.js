@@ -1,3 +1,4 @@
+// 🔗 Replace with your actual GitHub Pages URL
 const DATA_URL = 'https://raw.githubusercontent.com/USACE-RMC/RMCLakewoodLibrary/main/RMCJSON.json';
 
 let books = [];
@@ -10,7 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
 function fetchBooks() {
     fetch(DATA_URL)
         .then(response => {
-            if (!response.ok) throw new Error('Failed to fetch JSON');
+            if (!response.ok) throw new Error('Network response was not ok');
             return response.json();
         })
         .then(data => {
@@ -19,8 +20,9 @@ function fetchBooks() {
             populateAuthorFilter(books);
         })
         .catch(error => {
-            console.error('Fetch error:', error);
-            showModal('Error', 'Could not load book data.');
+            console.error('Error fetching JSON:', error);
+            showModal('Error', 'Unable to load book data. Please check the file path or permissions.');
+            console.log('Fetched books:', data);
         });
 }
 
@@ -144,9 +146,6 @@ function showModal(title, message) {
     document.getElementById('modalMessage').textContent = message;
     document.getElementById('confirmationModal').style.display = 'flex';
 }
-
-
-
 
 
 
