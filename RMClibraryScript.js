@@ -22,6 +22,7 @@ function fetchBooks() {
         .catch(error => {
             console.error('Error fetching JSON:', error);
             showModal('Error', 'Unable to load book data. Please check the file path or permissions.');
+            console.log('Fetched books:', data);
         });
 }
 
@@ -138,5 +139,6 @@ function showModal(title, message) {
     document.getElementById('modalMessage').textContent = message;
     document.getElementById('confirmationModal').style.display = 'flex';
 }
+
 
 
