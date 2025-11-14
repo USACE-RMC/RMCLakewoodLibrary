@@ -112,31 +112,66 @@ function setupEventListeners() {
 }
 
 // ✅ Checkout flow
+const API_BASE = "https://your-flask-api-host.com"; 
+// Replace with your deployed Flask API URL
+
 function openNameModal(index) {
   selectedBook = index;
   document.getElementById('nameModal').style.display = 'flex';
 }
 
-function checkOutBook(index, userName) {
-  if (books[index].Status === "Available") {
-    books[index].Status = "Checked Out";
-    books[index].User = userName;
-    populateTable(books);
-    showConfirmation("Book Checked Out", `"${books[index]["Book Title"]}" has been checked out by ${userName}.`);
-  } else {
-    showConfirmation("Error", `"${books[index]["Book Title"]}" is already checked out.`);
+async function checkOutBook(index, userName) {
+  const barcode = books[index].Barcode;
+
+  try {
+    const response = await fetch(`${API_BASE}/checkout`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ barcode: barcode, user: userName })
+    });
+
+    const result = await response.json();
+
+    if (response.ok) {
+      // Update frontend table immediately
+      books[index].Status = "Checked Out";
+      books[index].User = userName;
+      populateTable(books);
+      showConfirmation("Book Checked Out", `"${books[index]["Book Title"]}" has been checked out by ${userName}.`);
+    } else {
+      showConfirmation("Error", result.error || "Checkout failed.");
+    }
+  } catch (err) {
+    console.error(err);
+    showConfirmation("Error", "Network error while checking out.");
   }
 }
 
-function checkInBook(index) {
-  if (books[index].Status === "Checked Out") {
-    const userName = books[index].User;
-    books[index].Status = "Available";
-    books[index].User = "nan";
-    populateTable(books);
-    showConfirmation("Book Checked In", `"${books[index]["Book Title"]}" has been returned by ${userName}.`);
-  } else {
-    showConfirmation("Error", `"${books[index]["Book Title"]}" is not currently checked out.`);
+async function checkInBook(index) {
+  const barcode = books[index].Barcode;
+  const userName = books[index].User;
+
+  try {
+    const response = await fetch(`${API_BASE}/checkin`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ barcode: barcode })
+    });
+
+    const result = await response.json();
+
+    if (response.ok) {
+      // Update frontend table immediately
+      books[index].Status = "Available";
+      books[index].User = "nan";
+      populateTable(books);
+      showConfirmation("Book Checked In", `"${books[index]["Book Title"]}" has been returned by ${userName}.`);
+    } else {
+      showConfirmation("Error", result.error || "Checkin failed.");
+    }
+  } catch (err) {
+    console.error(err);
+    showConfirmation("Error", "Network error while checking in.");
   }
 }
 
@@ -146,5 +181,6 @@ function showConfirmation(title, message) {
   document.getElementById("modalMessage").textContent = message;
   document.getElementById("confirmationModal").style.display = "flex";
 }
+
 
 
