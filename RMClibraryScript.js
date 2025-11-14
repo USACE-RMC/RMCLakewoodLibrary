@@ -1,5 +1,5 @@
 // 🔗 Replace with your actual GitHub Pages URL
-const DATA_URL = 'https://usace-rmc.github.io/reponame/RMCJSON.json';
+const DATA_URL = 'https://usace-rmc.github.io/RMCLakewoodLibrary/RMCJSON.json';
 
 let books = [];
 
@@ -138,3 +138,4 @@ function showModal(title, message) {
     document.getElementById('modalMessage').textContent = message;
     document.getElementById('confirmationModal').style.display = 'flex';
 }
+
