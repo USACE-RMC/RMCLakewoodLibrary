@@ -46,9 +46,11 @@ function populateTable(data) {
             <td class="${book.Status === 'Available' ? 'status-available' : 'status-checked-out'}">${book.Status}</td>
             <td>${book.User !== 'nan' ? book.User : ''}</td>
             <td>
-                <button class="action-btn" onclick="checkOutBook('${book.Barcode}')">Check Out</button>
-                <button class="action-btn" onclick="checkInBook('${book.Barcode}')">Check In</button>
-            </td>
+    <div style="display: flex; flex-direction: column; gap: 6px;">
+        <button class="action-btn" onclick="checkOutBook('${book.Barcode}')">Check Out</button>
+        <button class="action-btn" onclick="checkInBook('${book.Barcode}')">Check In</button>
+    </div>
+</td>
         `;
         tbody.appendChild(row);
     });
@@ -146,6 +148,7 @@ function showModal(title, message) {
     document.getElementById('modalMessage').textContent = message;
     document.getElementById('confirmationModal').style.display = 'flex';
 }
+
 
 
 
