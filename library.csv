@@ -1,4 +1,4 @@
-Book Title,Author,Barcode,Status,User
+Book_Title,Author,Barcode,Status,User
 "Pacific Northwest Storms of December 1-4, 2007 (Technical Council on Lifeline Earthquake Engineering Monograph)","Edited by Teresa Elliot, P.E. and Alex K. Tang, P.E.",2010000000007,Available,nan
 Water Resources Engineering,"Ralph A. Wurbs, Wesley P. James",2010000000014,Available,nan
 Applied Hydrogeology,C.W. Fetter,2010000000021,Checked Out,Jane Doe
@@ -276,3 +276,4 @@ The Effect of Rate of Displacement on Measuring the Residual Strength of Clays,D
 Comparison of Results of Liquid limit Tests By Standard and One-Point Methods,,2010000002766,Available,nan
 Performance of Relief Wells Along Missouri River Levees 1951-1952 Floods,,2010000002773,Available,nan
 Seismic Instrumentation Conference on Earth and Concrete Dams,,2010000002780,Available,nan
+
