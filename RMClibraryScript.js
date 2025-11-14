@@ -1,5 +1,5 @@
-// ✅ Keep your data source URL
-const DATA_URL = 'https://raw.githubusercontent.com/USACE-RMC/RMCLakewoodLibrary/main/RMCJSON.json';
+// ✅ Keep your data source URL (pointing to CSV now)
+const DATA_URL = 'https://raw.githubusercontent.com/USACE-RMC/RMCLakewoodLibrary/main/library.csv';
 
 let books = [];
 let selectedBook = null;
@@ -10,16 +10,21 @@ document.addEventListener('DOMContentLoaded', () => {
   setupEventListeners();
 });
 
-// ✅ Fetch JSON data
+// ✅ Fetch CSV data using PapaParse
 function fetchBooks() {
-  fetch(DATA_URL)
-    .then(response => response.json())
-    .then(data => {
-      books = data;
+  Papa.parse(DATA_URL, {
+    download: true,       // fetch the file from the URL
+    header: true,         // use the first row as column headers
+    skipEmptyLines: true, // ignore blank rows
+    complete: function(results) {
+      books = results.data; // PapaParse returns an array of objects
       populateTable(books);
       populateAuthorFilter(books);
-    })
-    .catch(err => console.error('Error loading books:', err));
+    },
+    error: function(err) {
+      console.error('Error loading books:', err);
+    }
+  });
 }
 
 // ✅ Build table
@@ -141,3 +146,5 @@ function showConfirmation(title, message) {
   document.getElementById("modalMessage").textContent = message;
   document.getElementById("confirmationModal").style.display = "flex";
 }
+
+
