@@ -16,7 +16,6 @@ function displayBooks(books) {
   <td>${book["Status"]}</td>
   <td>${book["User"] || ""}</td>
 </tr>`;
-
     tbody.innerHTML += row;
   });
 }
