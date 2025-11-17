@@ -1,7 +1,8 @@
 // script.js
 
-const siteUrl = "https://your-sharepoint-site-url";
-const listName = "YourListName";
+// Define the SharePoint site URL and list name
+const siteUrl = "https://usace.dps.mil/sites/TDL-CEIWR-RMC-ALL";
+const listName = "LibraryBooks";
 
 // Fetch books from SharePoint
 async function fetchBooks() {
