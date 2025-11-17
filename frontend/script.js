@@ -42,10 +42,10 @@ document.getElementById("bookForm").addEventListener("submit", async (e) => {
 
   const data = { barcode, user, action };
 
-  await fetch("https://api.github.com/repos/USERNAME/REPO/issues", {
+  await fetch("https://api.github.com/repos/USACE-RMC/RMCLakewoodLibrary/issues", {
     method: "POST",
     headers: {
-      "Authorization": "token YOUR_GITHUB_TOKEN",
+      "Authorization": "token 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",
       "Accept": "application/vnd.github.v3+json"
     },
     body: JSON.stringify({
