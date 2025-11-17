@@ -10,12 +10,13 @@ function displayBooks(books) {
   tbody.innerHTML = "";
   books.forEach(book => {
     const row = `<tr>
-      <td>${book.Book_Title}</td>
-      <td>${book.Author}</td>
-      <td>${book.Barcode}</td>
-      <td>${book.Status}</td>
-      <td>${book.User || ""}</td>
-    </tr>`;
+  <td>${book["Book Title"]}</td>
+  <td>${book["Author"]}</td>
+  <td>${book["Barcode"]}</td>
+  <td>${book["Status"]}</td>
+  <td>${book["User"] || ""}</td>
+</tr>`;
+
     tbody.innerHTML += row;
   });
 }
