@@ -4,13 +4,48 @@
 const siteUrl = "https://usace.dps.mil/sites/TDL-CEIWR-RMC-ALL";
 const listName = "LibraryBooks";
 
+// Define your Azure AD credentials
+const tenantId = "<Your Tenant ID>"; // Replace with your Tenant ID
+const clientId = "<Your Client ID>"; // Replace with your Client ID
+const clientSecret = "<Your Client Secret>"; // Replace with your Client Secret
+const resource = "https://usace.dps.mil"; // SharePoint resource URL
+
+// Function to obtain an access token
+async function getAccessToken() {
+  const tokenUrl = `https://login.microsoftonline.com/${tenantId}/oauth2/token`;
+
+  const response = await fetch(tokenUrl, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded"
+    },
+    body: new URLSearchParams({
+      grant_type: "client_credentials",
+      client_id: clientId,
+      client_secret: clientSecret,
+      resource: resource
+    })
+  });
+
+  const data = await response.json();
+  if (data.error) {
+    console.error("Error obtaining access token:", data.error_description);
+    throw new Error(data.error_description);
+  }
+  return data.access_token;
+}
+
 // Fetch books from SharePoint
 async function fetchBooks() {
+  const accessToken = await getAccessToken(); // Get the access token
+
   const response = await fetch(`${siteUrl}/_api/web/lists/getbytitle('${listName}')/items`, {
     headers: {
+      "Authorization": `Bearer ${accessToken}`, // Use the access token
       "Accept": "application/json;odata=verbose"
     }
   });
+
   const data = await response.json();
   return data.d.results;
 }
@@ -38,12 +73,14 @@ async function checkOutBook(bookId) {
   const userName = prompt("Enter your name:");
   if (!userName) return alert("Name is required!");
 
+  const accessToken = await getAccessToken(); // Get the access token
+
   await fetch(`${siteUrl}/_api/web/lists/getbytitle('${listName}')/items(${bookId})`, {
     method: "POST",
     headers: {
+      "Authorization": `Bearer ${accessToken}`, // Use the access token
       "Accept": "application/json;odata=verbose",
-      "Content-Type": "application/json;odata=verbose",
-      "X-RequestDigest": document.getElementById("__REQUESTDIGEST").value
+      "Content-Type": "application/json;odata=verbose"
     },
     body: JSON.stringify({
       Status: "Checked Out",
@@ -57,12 +94,14 @@ async function checkOutBook(bookId) {
 
 // Check in a book
 async function checkInBook(bookId) {
+  const accessToken = await getAccessToken(); // Get the access token
+
   await fetch(`${siteUrl}/_api/web/lists/getbytitle('${listName}')/items(${bookId})`, {
     method: "POST",
     headers: {
+      "Authorization": `Bearer ${accessToken}`, // Use the access token
       "Accept": "application/json;odata=verbose",
-      "Content-Type": "application/json;odata=verbose",
-      "X-RequestDigest": document.getElementById("__REQUESTDIGEST").value
+      "Content-Type": "application/json;odata=verbose"
     },
     body: JSON.stringify({
       Status: "Available",
