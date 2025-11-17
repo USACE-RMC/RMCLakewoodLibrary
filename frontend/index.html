@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Library Management</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>Library Book Management</h1>
+
+  <!-- Check-out / Check-in Form -->
+  <form id="bookForm">
+    <input type="text" id="barcode" placeholder="Book Barcode" required>
+    <input type="text" id="user" placeholder="Your Name" required>
+    <select id="action" required>
+      <option value="checkout">Check Out</option>
+      <option value="checkin">Check In</option>
+    </select>
+    <button type="submit">Submit</button>
+  </form>
+
+  <!-- Search Box -->
+  <input type="text" id="searchBox" placeholder="Search by Title, Author, or User">
+
+  <!-- Table -->
+  <table id="bookTable">
+    <thead>
+      <tr>
+        <th>Book Title</th>
+        <th>Author</th>
+        <th>Barcode</th>
+        <th>Status</th>
+        <th>User</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <script src="script.js"></script>
+</body>
+</html>
+

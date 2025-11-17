@@ -1,0 +1,19 @@
+name: Update Library
+on:
+  issues:
+    types: [opened]
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Run Python script
+        run: |
+          ISSUE_BODY='${{ github.event.issue.body }}' python update_library.py
+      - name: Commit changes
+        run: |
+          git config --global user.name "github-actions"
+          git config --global user.email "actions@github.com"
+          git add library.json library.csv
+          git commit -m "Update library data"
+          git push
