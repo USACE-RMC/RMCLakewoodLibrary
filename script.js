@@ -5,9 +5,9 @@ const siteUrl = "https://usace.dps.mil/sites/TDL-CEIWR-RMC-ALL";
 const listName = "LibraryBooks";
 
 // Define your Azure AD credentials
-const tenantId = "<Your Tenant ID>"; // Replace with your Tenant ID
-const clientId = "<Your Client ID>"; // Replace with your Client ID
-const clientSecret = "<Your Client Secret>"; // Replace with your Client Secret
+const tenantId = "fc4d76ba-f17c-4c50-b9a7-8f3163d27582"; // Directory (tenant) ID
+const clientId = "0aab0c23-5dcf-40c5-80ff-4a35fcbf9d44"; // Application (client) ID
+const clientSecret = "4ea6d8e3-d7d4-40cd-8f99-44f91f0df474"; // Client Secret ID
 const resource = "https://usace.dps.mil"; // SharePoint resource URL
 
 // Function to obtain an access token
