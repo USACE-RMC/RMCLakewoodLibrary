@@ -6,8 +6,6 @@ on:
 jobs:
   update:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write  # Grant write permissions to the repository contents
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
@@ -26,6 +24,7 @@ jobs:
         env:
           ISSUE_BODY: ${{ github.event.issue.body }}
         run: |
+          echo "$ISSUE_BODY" > issue_body.json
           python update_library.py
 
       - name: Commit changes
