@@ -3,12 +3,12 @@ let libraryData = [];
 let currentPage = 1;
 const booksPerPage = 9; // Display 9 books per page for a card layout
 
-fetch('library.json')
+fetch('data/library.json') // Update the path to include the "data" folder
     .then(response => response.json())
     .then(data => {
         libraryData = data;
-        displayBooks(); 
-});
+        displayBooks();
+    });
 
 require('dotenv').config(); // Load environment variables from .env file
 
