@@ -6,6 +6,8 @@ on:
 jobs:
   update:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write  # Grant write permissions
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
@@ -24,7 +26,6 @@ jobs:
         env:
           ISSUE_BODY: ${{ github.event.issue.body }}
         run: |
-          echo "$ISSUE_BODY" > issue_body.json
           python update_library.py
 
       - name: Commit changes
@@ -33,4 +34,29 @@ jobs:
           git config --global user.email "actions@github.com"
           git add data/library.json data/library.csv
           git commit -m "Update library data"
-          git push
+          git push origin HEAD:${{ github.ref }}
+      - name: Close issue
+        if: success() && github.event.issue.state == 'open'
+        uses: peter-evans/close-issue@v2  
+        with:
+          issue-number: ${{ github.event.issue.number }}
+          comment: "Library updated successfully and issue closed."
+          reason: completed 
+      - name: Handle failure
+        if: failure() 
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const issue_number = context.payload.issue.number;
+            const comment = "There was an error updating the library. Please check the logs for details.";
+            await github.issues.createComment({
+              ...context.repo,
+              issue_number,
+              body: comment
+            });
+            await github.issues.update({
+              ...context.repo,
+              issue_number,
+              state: 'open'
+            });
+            
