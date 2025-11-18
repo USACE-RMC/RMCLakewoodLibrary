@@ -1,5 +1,3 @@
-# yaml-language-server: $schema=./.github/workflows/github-workflow.json
-
 name: Update Library
 on:
   issues:
