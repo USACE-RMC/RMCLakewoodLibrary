@@ -1,89 +1,112 @@
-// Load book data from JSON file
-async function loadBooks() {
-  const response = await fetch("../data/library.json");
-  const books = await response.json();
-  displayBooks(books);
+// Load library data
+let libraryData = [];
+let currentPage = 1;
+const booksPerPage = 50;
+
+fetch('library.json')
+    .then(response => response.json())
+    .then(data => {
+        libraryData = data;
+        displayBooks();
+    });
+
+// Display books with pagination in a table
+function displayBooks() {
+    const booksContainer = document.getElementById('booksContainer');
+    const startIndex = (currentPage - 1) * booksPerPage;
+    const endIndex = startIndex + booksPerPage;
+    const booksToDisplay = libraryData.slice(startIndex, endIndex);
+
+    booksContainer.innerHTML = booksToDisplay.map(book => `
+        <tr>
+            <td>${book['Book Title']}</td>
+            <td>${book['Author']}</td>
+            <td>${book['Barcode']}</td>
+            <td>${book['Status']}</td>
+            <td>${book['User'] || 'N/A'}</td>
+        </tr>
+    `).join('');
+
+    document.getElementById('currentPage').textContent = `Page ${currentPage}`;
 }
 
-function displayBooks(books) {
-  const tbody = document.querySelector("#bookTable tbody");
-  tbody.innerHTML = "";
+// Change page
+function changePage(direction) {
+    const totalPages = Math.ceil(libraryData.length / booksPerPage);
+    currentPage += direction;
 
-  books.forEach(book => {
-    const row = document.createElement("tr");
+    if (currentPage < 1) {
+        currentPage = 1;
+    } else if (currentPage > totalPages) {
+        currentPage = totalPages;
+    }
 
-    row.innerHTML = `
-      <td>${book["Book Title"]}</td>
-      <td>${book["Author"]}</td>
-      <td>${book["Barcode"]}</td>
-      <td>${book["Status"]}</td>
-      <td>${book["User"] || ""}</td>
-      <td>
-        ${book["Status"] === "Checked Out" ? `<button onclick="checkInBook('${book["Barcode"]}')">Check In</button>` : ""}
-      </td>
+    displayBooks();
+}
+
+// Search for books
+function searchBooks() {
+    const query = document.getElementById('searchInput').value.toLowerCase();
+    const results = libraryData.filter(book =>
+        book['Book Title'].toLowerCase().includes(query) ||
+        book['Author'].toLowerCase().includes(query) ||
+        (book['User'] && book['User'].toLowerCase().includes(query))
+    );
+
+    const resultsDiv = document.getElementById('searchResults');
+    resultsDiv.innerHTML = `
+        <table>
+            <thead>
+                <tr>
+                    <th>Book Title</th>
+                    <th>Author</th>
+                    <th>Barcode</th>
+                    <th>Status</th>
+                    <th>User</th>
+                </tr>
+            </thead>
+            <tbody>
+                ${results.map(book => `
+                    <tr>
+                        <td>${book['Book Title']}</td>
+                        <td>${book['Author']}</td>
+                        <td>${book['Barcode']}</td>
+                        <td>${book['Status']}</td>
+                        <td>${book['User'] || 'N/A'}</td>
+                    </tr>
+                `).join('')}
+            </tbody>
+        </table>
     `;
-
-    tbody.appendChild(row);
-  });
-}
-async function checkInBook(barcode) {
-  const data = {
-    barcode: barcode,
-    user: "",           // Clear user on check-in
-    action: "checkin"
-  };
-
-  await fetch("https://api.github.com/repos/USACE-RMC/RMCLakewoodLibrary/issues", {
-    method: "POST",
-    headers: {
-      "Authorization": "token YOUR_GITHUB_TOKEN",  // Replace with secure proxy or backend
-      "Accept": "application/vnd.github.v3+json"
-    },
-    body: JSON.stringify({
-      title: `Book checkin: ${barcode}`,
-      body: JSON.stringify(data)
-    })
-  });
-
-  alert("Book checked in! Refresh to see updates.");
 }
 
+// Check out a book
+function checkoutBook() {
+    const name = document.getElementById('checkoutName').value;
+    const barcode = document.getElementById('checkoutBarcode').value;
 
-// Search functionality
-document.getElementById("searchBox").addEventListener("input", async (e) => {
-  const query = e.target.value.toLowerCase();
-  const response = await fetch("../data/library.json");
-  const books = await response.json();
-  const filtered = books.filter(book =>
-    book.Book_Title.toLowerCase().includes(query) ||
-    book.Author.toLowerCase().includes(query) ||
-    (book.User && book.User.toLowerCase().includes(query))
-  );
-  displayBooks(filtered);
-});
+    const book = libraryData.find(book => book.Barcode === barcode);
+    if (book && book.Status === 'Available') {
+        book.Status = 'Checked Out';
+        book.User = name;
+        alert(`Book checked out successfully!`);
+        displayBooks();
+    } else {
+        alert(`Book not available or invalid barcode.`);
+    }
+}
 
-// Submit form (creates GitHub Issue)
-document.getElementById("bookForm").addEventListener("submit", async (e) => {
-  e.preventDefault();
-  const barcode = document.getElementById("barcode").value;
-  const user = document.getElementById("user").value;
-  const action = document.getElementById("action").value;
+// Check in a book
+function checkinBook() {
+    const barcode = document.getElementById('checkinBarcode').value;
 
-  const data = { barcode, user, action };
-
-  await fetch("https://api.github.com/repos/USACE-RMC/RMCLakewoodLibrary/issues", {
-    method: "POST",
-    headers: {
-      "Authorization": "token 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",
-      "Accept": "application/vnd.github.v3+json"
-    },
-    body: JSON.stringify({
-      title: `Book ${action}: ${barcode}`,
-      body: JSON.stringify(data)
-    })
-  });
-
-  alert("Submitted! Please refresh after a minute to see updates.");
-});
-
-loadBooks();
+    const book = libraryData.find(book => book.Barcode === barcode);
+    if (book && book.Status === 'Checked Out') {
+        book.Status = 'Available';
+        book.User = 'nan';
+        alert(`Book checked in successfully!`);
+        displayBooks();
+    } else {
+        alert(`Book not checked out or invalid barcode.`);
+    }
+}
