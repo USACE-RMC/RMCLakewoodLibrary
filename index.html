@@ -4,40 +4,53 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Library Management System</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="styles.css"> <!-- Link to your CSS file -->
 </head>
 <body>
     <header>
-        <div class="header-container">
-            <h1>Library Management System</h1>
-            <div class="search-bar">
-                <input type="text" id="searchInput" placeholder="Search by Title, Author, or User">
-                <button onclick="searchBooks()">Search</button>
-            </div>
-        </div>
+        <h1>Library Management System</h1>
     </header>
+
     <main>
-        <section id="checkout">
+        <!-- Search Section -->
+        <section id="searchSection">
+            <h2>Search Books</h2>
+            <input type="text" id="searchInput" placeholder="Search by title, author, or user">
+            <button onclick="searchBooks()">Search</button>
+        </section>
+        
+        <!-- Check Out Section -->
+        <section id="checkoutSection">
             <h2>Check Out a Book</h2>
-            <input type="text" id="checkoutName" placeholder="Your Name">
-            <input type="text" id="checkoutBarcode" placeholder="Book Barcode">
+            <label for="checkoutBarcode">Barcode:</label>
+            <input type="text" id="checkoutBarcode" placeholder="Enter book barcode">
+            <label for="checkoutUser">User Name:</label>
+            <input type="text" id="checkoutUser" placeholder="Enter your name">
             <button onclick="checkoutBook()">Check Out</button>
         </section>
-        <section id="checkin">
+
+        <!-- Check In Section -->
+        <section id="checkinSection">
             <h2>Check In a Book</h2>
-            <input type="text" id="checkinBarcode" placeholder="Book Barcode">
+            <label for="checkinBarcode">Barcode:</label>
+            <input type="text" id="checkinBarcode" placeholder="Enter book barcode">
             <button onclick="checkinBook()">Check In</button>
         </section>
-        <section id="bookList">
+
+        <!-- Books Display Section -->
+        <section id="booksDisplay">
             <h2>Library Books</h2>
-            <div id="booksContainer" class="books-container"></div>
+            <div id="booksContainer"></div>
             <div id="pagination">
-                <button id="prevPage" onclick="changePage(-1)">Previous</button>
+                <button onclick="changePage(-1)">Previous</button>
                 <span id="currentPage">Page 1</span>
-                <button id="nextPage" onclick="changePage(1)">Next</button>
+                <button onclick="changePage(1)">Next</button>
             </div>
         </section>
+
+        
     </main>
-    <script src="script.js"></script>
+
+    <script src="script.js"></script> <!-- Link to your JavaScript file -->
 </body>
 </html>

@@ -2,18 +2,35 @@ name: Update Library
 on:
   issues:
     types: [opened]
+
 jobs:
   update:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - name: Run Python script
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
+
+      - name: Install dependencies
         run: |
-          ISSUE_BODY='${{ github.event.issue.body }}' python update_library.py
+          python -m pip install --upgrade pip
+          pip install json
+
+      - name: Run Python script
+        env:
+          ISSUE_BODY: ${{ github.event.issue.body }}
+        run: |
+          echo "$ISSUE_BODY" > issue_body.json
+          python update_library.py
+
       - name: Commit changes
         run: |
           git config --global user.name "github-actions"
           git config --global user.email "actions@github.com"
-          git add library.json library.csv
+          git add data/library.json data/library.csv
           git commit -m "Update library data"
           git push
