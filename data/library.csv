@@ -1,8 +1,8 @@
 Book Title,Author,Barcode,Status,User
-"Pacific Northwest Storms of December 1-4, 2007 (Technical Council on Lifeline Earthquake Engineering Monograph)","Edited by Teresa Elliot, P.E. and Alex K. Tang, P.E.",2010000000007,Available,nan
+"Pacific Northwest Storms of December 1-4, 2007 (Technical Council on Lifeline Earthquake Engineering Monograph)","Edited by Teresa Elliot, P.E. and Alex K. Tang, P.E.",2010000000007,Checked Out,John Doe
 Water Resources Engineering,"Ralph A. Wurbs, Wesley P. James",2010000000014,Available,nan
 Applied Hydrogeology,C.W. Fetter,2010000000021,Available,nan
-Floods in a Changing Climate,"Slobodan P. Simonovic, Slobodan P. Simonović",2010000000045,Available,nan
+Floods in a Changing Climate,"Slobodan P. Simonovic, Slobodan P. Simonovi",2010000000045,Available,nan
 Floods in a Changing Climate,Giuliano Di Baldassarre,2010000000052,Available,nan
 Floods in a Changing Climate,"P. P. Mujumdar, D. Nagesh Kumar",2010000000069,Available,nan
 Applied Hydrogeology (4th Edition),C.W. Fetter Jr.,2010000000076,Available,nan
@@ -161,7 +161,7 @@ Influence of Backfill Properties on the Collapse of Pipes Under Dynamic Loads,"J
 Influence if Sample Disturbance on Sand Response to Cyclic loading,"Kenji Mori, H. Bolton Seed, Clarence K, Chan",2010000001608,Available,nan
 Construction Soils Control,U.S Army Corps of Engineers,2010000001615,Available,nan
 Data Sheets Earth Dams,U.S Army Corps of Engineers,2010000001622,Available,nan
-Bureau of Reclamation Strong Motion instrumentation Assessment and Prioritization Tool,"Jon Ake, Dave Gillette, Dan O’Connell, Gregg Scott, Chris Wood",2010000001639,Available,nan
+Bureau of Reclamation Strong Motion instrumentation Assessment and Prioritization Tool,"Jon Ake, Dave Gillette, Dan O�Connell, Gregg Scott, Chris Wood",2010000001639,Available,nan
 Earth Dams Volume II,U.S Army Corps of Engineers,2010000001646,Available,nan
 Proceedings of China-US Workshop on Eathquake Behavior of Arch Dams,"R. W. Cough, Zhang Guangdou",2010000001653,Available,nan
 "The December 7, 1988 Armenia, USSR Earthquake",EQE Engineering,2010000001660,Available,nan

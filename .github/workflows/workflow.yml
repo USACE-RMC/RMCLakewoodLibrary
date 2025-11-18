@@ -1,3 +1,4 @@
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow
 name: Update Library
 on:
   issues:
@@ -22,9 +23,8 @@ jobs:
 
       - name: Run Python script
         env:
-          ISSUE_BODY: ${{ github.event.issue.body }}
+          ISSUE_BODY: ${{ github.event.issue.body }}  # Pass issue body as environment variable
         run: |
-          echo "$ISSUE_BODY" > issue_body.json
           python update_library.py
 
       - name: Commit changes
