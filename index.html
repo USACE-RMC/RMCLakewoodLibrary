@@ -1,41 +1,43 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Library Management</title>
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Library Management System</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <h1>Library Book Management</h1>
-
-  <!-- Check-out / Check-in Form -->
-  <form id="bookForm">
-    <input type="text" id="barcode" placeholder="Book Barcode" required>
-    <input type="text" id="user" placeholder="Your Name" required>
-    <select id="action" required>
-      <option value="checkout">Check Out</option>
-      <option value="checkin">Check In</option>
-    </select>
-    <button type="submit">Submit</button>
-  </form>
-
-  <!-- Search Box -->
-  <input type="text" id="searchBox" placeholder="Search by Title, Author, or User">
-
-  <!-- Table -->
-  <table id="bookTable">
-    <thead>
-      <tr>
-        <th>Book Title</th>
-        <th>Author</th>
-        <th>Barcode</th>
-        <th>Status</th>
-        <th>User</th>
-      </tr>
-    </thead>
-    <tbody></tbody>
-  </table>
-
-  <script src="script.js"></script>
+    <header>
+        <div class="header-container">
+            <h1>Library Management System</h1>
+            <div class="search-bar">
+                <input type="text" id="searchInput" placeholder="Search by Title, Author, or User">
+                <button onclick="searchBooks()">Search</button>
+            </div>
+        </div>
+    </header>
+    <main>
+        <section id="checkout">
+            <h2>Check Out a Book</h2>
+            <input type="text" id="checkoutName" placeholder="Your Name">
+            <input type="text" id="checkoutBarcode" placeholder="Book Barcode">
+            <button onclick="checkoutBook()">Check Out</button>
+        </section>
+        <section id="checkin">
+            <h2>Check In a Book</h2>
+            <input type="text" id="checkinBarcode" placeholder="Book Barcode">
+            <button onclick="checkinBook()">Check In</button>
+        </section>
+        <section id="bookList">
+            <h2>Library Books</h2>
+            <div id="booksContainer" class="books-container"></div>
+            <div id="pagination">
+                <button id="prevPage" onclick="changePage(-1)">Previous</button>
+                <span id="currentPage">Page 1</span>
+                <button id="nextPage" onclick="changePage(1)">Next</button>
+            </div>
+        </section>
+    </main>
+    <script src="script.js"></script>
 </body>
 </html>
-

@@ -1,7 +1,7 @@
 // Load library data
 let libraryData = [];
 let currentPage = 1;
-const booksPerPage = 50;
+const booksPerPage = 9; // Display 9 books per page for a card layout
 
 fetch('library.json')
     .then(response => response.json())
@@ -10,7 +10,7 @@ fetch('library.json')
         displayBooks();
     });
 
-// Display books with pagination in a table
+// Display books with pagination in card layout
 function displayBooks() {
     const booksContainer = document.getElementById('booksContainer');
     const startIndex = (currentPage - 1) * booksPerPage;
@@ -18,13 +18,15 @@ function displayBooks() {
     const booksToDisplay = libraryData.slice(startIndex, endIndex);
 
     booksContainer.innerHTML = booksToDisplay.map(book => `
-        <tr>
-            <td>${book['Book Title']}</td>
-            <td>${book['Author']}</td>
-            <td>${book['Barcode']}</td>
-            <td>${book['Status']}</td>
-            <td>${book['User'] || 'N/A'}</td>
-        </tr>
+        <div class="book-card">
+            <h3>${book['Book Title']}</h3>
+            <p><strong>Author:</strong> ${book['Author']}</p>
+            <p><strong>Barcode:</strong> ${book['Barcode']}</p>
+            <p class="status ${book.Status === 'Checked Out' ? 'checked-out' : ''}">
+                ${book.Status}
+            </p>
+            <button onclick="checkoutBook('${book.Barcode}')">Check Out</button>
+        </div>
     `).join('');
 
     document.getElementById('currentPage').textContent = `Page ${currentPage}`;
@@ -53,42 +55,26 @@ function searchBooks() {
         (book['User'] && book['User'].toLowerCase().includes(query))
     );
 
-    const resultsDiv = document.getElementById('searchResults');
-    resultsDiv.innerHTML = `
-        <table>
-            <thead>
-                <tr>
-                    <th>Book Title</th>
-                    <th>Author</th>
-                    <th>Barcode</th>
-                    <th>Status</th>
-                    <th>User</th>
-                </tr>
-            </thead>
-            <tbody>
-                ${results.map(book => `
-                    <tr>
-                        <td>${book['Book Title']}</td>
-                        <td>${book['Author']}</td>
-                        <td>${book['Barcode']}</td>
-                        <td>${book['Status']}</td>
-                        <td>${book['User'] || 'N/A'}</td>
-                    </tr>
-                `).join('')}
-            </tbody>
-        </table>
-    `;
+    const booksContainer = document.getElementById('booksContainer');
+    booksContainer.innerHTML = results.map(book => `
+        <div class="book-card">
+            <h3>${book['Book Title']}</h3>
+            <p><strong>Author:</strong> ${book['Author']}</p>
+            <p><strong>Barcode:</strong> ${book['Barcode']}</p>
+            <p class="status ${book.Status === 'Checked Out' ? 'checked-out' : ''}">
+                ${book.Status}
+            </p>
+            <button onclick="checkoutBook('${book.Barcode}')">Check Out</button>
+        </div>
+    `).join('');
 }
 
 // Check out a book
-function checkoutBook() {
-    const name = document.getElementById('checkoutName').value;
-    const barcode = document.getElementById('checkoutBarcode').value;
-
+function checkoutBook(barcode) {
     const book = libraryData.find(book => book.Barcode === barcode);
     if (book && book.Status === 'Available') {
         book.Status = 'Checked Out';
-        book.User = name;
+        book.User = 'User Name'; // Replace with actual user input
         alert(`Book checked out successfully!`);
         displayBooks();
     } else {
