@@ -1,4 +1,5 @@
-# yaml-language-server: $schema=https://json.schemastore.org/github-workflow
+# yaml-language-server: $schema=./.github/workflows/github-workflow.json
+
 name: Update Library
 on:
   issues:
@@ -7,6 +8,8 @@ on:
 jobs:
   update:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write  # Grant write permissions to the repository contents
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
@@ -23,7 +26,7 @@ jobs:
 
       - name: Run Python script
         env:
-          ISSUE_BODY: ${{ github.event.issue.body }}  # Pass issue body as environment variable
+          ISSUE_BODY: ${{ github.event.issue.body }}
         run: |
           python update_library.py
 
