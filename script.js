@@ -1,7 +1,7 @@
 // Load library data
 let libraryData = [];
 let currentPage = 1;
-const booksPerPage = 9; // Display 9 books per page for a card layout
+const booksPerPage = 20; // Display 20 books per page for a card layout
 
 fetch('data/library.json') // Update the path to include the "data" folder
     .then(response => response.json())

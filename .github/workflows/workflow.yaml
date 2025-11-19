@@ -59,4 +59,9 @@ jobs:
               issue_number,
               state: 'open'
             });
-            
+
+      - name: Show repo status before commit
+  run: |
+    git status
+    git diff
+
