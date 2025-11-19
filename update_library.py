@@ -32,3 +32,4 @@ with open("data/library.csv", "w", newline="") as f:
     writer = csv.DictWriter(f, fieldnames=["Book Title", "Author", "Barcode", "Status", "User"])
     writer.writeheader()
     writer.writerows(books)
+    
