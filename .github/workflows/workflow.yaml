@@ -1,58 +1,58 @@
 name: Update Library
+
 on:
   issues:
-    types: [opened]
+    types: [opened, edited]  # Trigger on new and edited issues
 
 jobs:
   update:
     runs-on: ubuntu-latest
     permissions:
-      contents: write  # Grant write permissions
+      contents: write   # Needed to push changes
+      issues: write     # Needed to comment on issues
+
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Set up Python
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v4
         with:
           python-version: '3.x'
 
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-  
-          
       - name: Run Python script
         env:
           ISSUE_BODY: ${{ github.event.issue.body }}
-        run: |
-          python update_library.py
+        run: python update_library.py
 
       - name: Commit changes
+        if: success()
         run: |
           git config --global user.name "github-actions"
           git config --global user.email "actions@github.com"
           git add data/library.json data/library.csv
-          git commit -m "Update library data"
-          git push origin HEAD:${{ github.ref }}
-      - name: Close issue
+          git commit -m "Update library data" || echo "No changes to commit"
+          git push origin main
+
+      - name: Close issue on success
         if: success() && github.event.issue.state == 'open'
-        uses: peter-evans/close-issue@v2  
+        uses: peter-evans/close-issue@v2
         with:
           issue-number: ${{ github.event.issue.number }}
-          comment: "Library updated successfully and issue closed."
-          reason: completed 
-      - name: Handle failure
-        if: failure() 
+          comment: "✅ Library updated successfully and issue closed."
+          reason: completed
+
+      - name: Comment on failure
+        if: failure()
         uses: actions/github-script@v6
         with:
           script: |
             const issue_number = context.payload.issue.number;
-            const comment = "There was an error updating the library. Please check the logs for details.";
+            const body = "⚠️ Validation failed. Please submit valid JSON with `barcode`, `user`, and `action` fields.";
             await github.issues.createComment({
               ...context.repo,
               issue_number,
-              body: comment
+              body
             });
             await github.issues.update({
               ...context.repo,
