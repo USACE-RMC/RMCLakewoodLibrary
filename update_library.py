@@ -57,4 +57,9 @@ if not updated:
 with open("data/library.json", "w") as f:
     json.dump(books, f, indent=2)
 
-with open("data/library
+with open("data/library.csv", "w", newline="") as f:
+    writer = csv.DictWriter(f, fieldnames=["Book Title", "Author", "Barcode", "Status", "User"])
+    writer.writeheader()
+    writer.writerows(books)
+
+print("✅ Library updated successfully.")
